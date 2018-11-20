@@ -1,0 +1,10 @@
+{ message: 'Calling https://docs.genesys.com/Special:Repository/ccpulse81rn.html?id=400b35b8-e24a-4fe8-9186-013fea11edc7',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-20T04:48:03.573Z',
+  [Symbol(level)]: 'info' }
+{ message: 'Execution time: 3484.898292005062',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-20T04:48:07.101Z',
+  [Symbol(level)]: 'info' }

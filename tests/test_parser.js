@@ -2,6 +2,8 @@
 var requester = require('../lib/parse').requester;
 var parser_85component_releaseslist = require('../lib/parse').parser_85component_releaseslist;
 var parser_85releasepage=require('../lib/parse').parser_85releasepage;
+var parsers=require('../lib/parse').parsers;
+var logger=require('../lib/logger');
 var rootCas = require('ssl-root-cas').create();
 var path = require('path');
 var { getlinks, findrelease,savetodb} = require('../db/dbconfig');
@@ -22,26 +24,33 @@ var options = {
     search: {
         solution_name: "Workspace Desktop Edition",
         component: "Workspace Desktop Edition",
-        family: "8.5",
+        family: "9.0",
         release: "",
-        url: ""
+        "release-link-href": ""
     }
 };
 
-var v = async () => {
-    var newreleases=[];
-    var releaseslist = await requester(options, parser_85component_releaseslist);
+var v = async (logger) => {
+    
+    try{
+    var releaseslist = await requester(options, parsers.releaselist);
 
     for (var i=0;i<releaseslist.length;i++){
         var opts=releaseslist[i];
         var release=await findrelease(opts);
         if(release.length==0){ //release not found, parse the page
-            options.url=opts.url;
+            options.url=opts["release-link-href"];
             options.search=opts;
-            var parsedrelease = await requester(options, parser_85releasepage);
-           console.log(JSON.stringify(parsedrelease));
+            var parsedrelease = await requester(options, parsers.page);
+           logger.info(JSON.stringify(parsedrelease));
+
+           await savetodb(parsedrelease);
         }
     };
+
+}catch(exc){
+    console.log(exc.stack)
+}
 }
 
-v();
+v(logger);
