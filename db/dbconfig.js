@@ -11,10 +11,12 @@ var dbconfig = {
         couchdb_pass: 'Genesys#1',
         //dbname: "genesys_releases",
         dbname: "test",
-        designdocument: "_design/scrapper",
+        _design: "_design",
         views: {
             links: {
-                path: "scrapper/links",
+                design_doc_name: "scrapper_links",
+                designdocument: "_design/scrapper_links",
+                path: "scrapper_links/links",
                 name: "links",
                 func: {
                     links: {
@@ -29,7 +31,9 @@ var dbconfig = {
                 exists: false
             },
             releases: {
-                path: "scrapper/releases",
+                design_doc_name: "scrapper_releases",
+                designdocument: "_design/scrapper_releases",
+                path: "scrapper_releases/releases",
                 name: "releases",
                 func: {
                     releases: {
@@ -54,24 +58,6 @@ query.params.dbname = dbconfig.connection_string.dbname;
 
 var createview = couchdb_requests.createView;
 createview.params.dbname = dbconfig.connection_string.dbname;
-createview.params.view = dbconfig.connection_string.designdocument;
-createview.params.func = {
-    links: dbconfig.connection_string.views.links.func
-}
-
-var createview = couchdb_requests.createView;
-createview.params.dbname = dbconfig.connection_string.dbname;
-createview.params.view = dbconfig.connection_string.designdocument;
-createview.params.func = {
-    links: {
-        map: function (doc) {
-            if (doc.solution_name && doc.component && doc.family && doc["component-href"]) {
-                emit([doc.solution_name, doc.component, doc.family, doc["component-href"]], 1);
-            }
-        },
-        reduce: "_count"
-    }
-}
 
 var save = couchdb_requests.save;
 save.params.dbname = dbconfig.connection_string.dbname;
@@ -80,7 +66,7 @@ var checkview = couchdb_requests.isviewexists;
 checkview.params.dbname = dbconfig.connection_string.dbname;
 
 var isViewExists = async function (viewname) {
-    dbconfig.connection_string.dbname;
+    //dbconfig.connection_string.dbname;
     checkview.params.view = viewname;
     return execute(checkview);
 
@@ -104,13 +90,15 @@ var getlinks = async function () {
 var checkView = async function (view) {
 
     return new Promise(async (resolve, reject) => {
+        //logger.debug("Checking ${view} exists");
 
         try {
             if (!view.exists) { // check locally stored value to avoid hitting database on every query request 
+
                 var b = await isViewExists(view.name); // local value is false, go ahead checking in db
                 if (!b) {
 
-                    createview.params.view = dbconfig.connection_string.designdocument;
+                    createview.params.view = view.designdocument;
                     createview.params.func = view.func;
                     await execute(createview);
                     
@@ -189,6 +177,7 @@ var savetodb = function (result) {
 var execute = function (params) {
     return new Promise(async (resolve, reject) => {
         try {
+            logger.debug("Sending to DB:"+JSON.stringify(params.request));
             var db = dbwrapper.getInstance(dbconfig.connection_string);
             var res = await db.handleRequest(params);
             resolve(res);

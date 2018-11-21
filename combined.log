@@ -8,3 +8,98 @@
   label: 'right meow!',
   timestamp: '2018-11-20T04:48:07.101Z',
   [Symbol(level)]: 'info' }
+{ message: 'listening on *:3000',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-21T01:30:04.860Z',
+  [Symbol(level)]: 'info' }
+{ message: 'listening on *:3000',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-21T01:33:24.812Z',
+  [Symbol(level)]: 'info' }
+{ message: 'Calling https://docs.genesys.com/Special:Repository/ccpulse81rn.html?id=400b35b8-e24a-4fe8-9186-013fea11edc7',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-21T02:24:35.469Z',
+  [Symbol(level)]: 'info' }
+{ message: 'Execution time: 9455.556013999972',
+  level: 'info',
+  label: 'right meow!',
+  timestamp: '2018-11-21T02:24:44.981Z',
+  [Symbol(level)]: 'info' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T03:05:00.088Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T04:05:00.404Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T05:05:00.522Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T06:05:00.407Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T07:05:00.447Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T08:05:00.231Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T09:05:00.608Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T10:05:00.416Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T11:05:00.183Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T12:05:00.458Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T13:05:00.275Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T14:05:00.392Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T15:05:00.547Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T16:05:00.419Z',
+  [Symbol(level)]: 'error' }
+{ message: 'CouchError: not_found: missing_named_view\n    at Request._onResponse [as _callback] (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\cradle\\lib\\cradle.js:241:29)\n    at Request.self.callback (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:185:22)\n    at emitTwo (events.js:126:13)\n    at Request.emit (events.js:214:7)\n    at Request.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1161:10)\n    at emitOne (events.js:116:13)\n    at Request.emit (events.js:211:7)\n    at IncomingMessage.<anonymous> (C:\\Users\\Administrator\\Documents\\JS\\dbms\\node_modules\\request\\request.js:1083:12)\n    at Object.onceWrapper (events.js:313:30)\n    at emitNone (events.js:111:20)',
+  level: 'error',
+  label: 'right meow!',
+  timestamp: '2018-11-21T17:05:00.307Z',
+  [Symbol(level)]: 'error' }
