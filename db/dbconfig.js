@@ -9,8 +9,8 @@ var dbconfig = {
         couchdb_port: 5984,
         couchdb_username: 'admin',
         couchdb_pass: 'Genesys#1',
-        //dbname: "genesys_releases",
-        dbname: "test",
+        dbname: "genesys_releases_bk",
+        //dbname: "test",
         _design: "_design",
         views: {
             links: {

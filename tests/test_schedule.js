@@ -1,16 +1,23 @@
 var schedule = require('node-schedule');
-var scrapperfabric=require('../scrapper');
 var logger=require('../lib/winstonlogger');
-var server=require('../server');
+var scrapper=require('../scrapper').scrapperCreate({logger: logger});
+
+var serverCreate=require('../server');
 
 
-var j = schedule.scheduleJob('5 * * * *', function(){
-    console.log('Scheduled job is starting');
+var job={
+  scheduledJob:null,
+  scrapper:scrapper,
+  report:{invocations:0}
+}
+ job.scheduledJob = schedule.scheduleJob('* * */1 * *', function(){
+    logger.info('Scheduled job is starting');
+    job.report.invocations++;
 
-    var scrapper=scrapperfabric.scrapperCreate({logger: logger});
-
-    scrapper.start();
+    job.scrapper.start();
   });
 
-server();
-console.log(j.nextInvocation())
+var server=serverCreate({job: job});
+server.server();
+
+//console.log(j.nextInvocation())
