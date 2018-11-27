@@ -18,7 +18,7 @@ rootCas
 
 
 var options = {
-    url: '',
+    url: 'https://docs.genesys.com/Documentation/RN',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'
@@ -28,7 +28,7 @@ var options = {
 
 
 var scrapperProto = {
-    start: function start() {
+    start: async function start() {
         var that = this;
 
         var requester = requestHandler();
@@ -38,26 +38,26 @@ var scrapperProto = {
             errors: []
         };
 
-        getlinks().then(async res => {
+        try {
+            var components = await requester.run(options, parsers.componentlinks);
 
-            var rn = res;
             var execution_report = [];
 
             var t0 = performance.now();
-            for (var i = 0; i < rn.length; i++) {
+            for (var i = 0; i < components.length; i++) {
 
 
-                var value = rn[i].key;
+                var value = components[i];
 
-                options.search.solution_name = value[0];
-                options.search.component = value[1];
-                options.search.family = value[2];
-                options.search['component-href'] = value[3];
-                //options.search=value;
+                //options.search.solution_name = value[0];
+                //options.search.component = value[1];
+                //options.search.family = value[2];
+                //options.search['component-href'] = value[3];
+                options.search = value;
 
 
 
-                options.url = value[3];
+                options.url = value['component-href'];
 
                 logger.info("Calling " + options.url);
 
@@ -86,15 +86,17 @@ var scrapperProto = {
                 report.report = execution_report;
 
             }
+        } catch (err) {
+            report.errors.push({ search: options.search, error: err.message });
+        }
 
-            report.execution_duration = Math.floor((performance.now() - t0) / 1000);
-            that.store(report);
+        report.execution_duration = Math.floor((performance.now() - t0) / 1000);
+        that.store(report);
 
-            logger.debug(JSON.stringify(report, null, 2));
-            logger.info("Execution time: " + report.execution_duration + 'sec')
+        logger.info(JSON.stringify(report, null, 2));
+        logger.info("Execution time: " + report.execution_duration + 'sec')
 
 
-        }).catch(err => logger.error(err.stack));
     },
     store: function store() { },
     report: function report() { }

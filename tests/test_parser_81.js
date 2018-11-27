@@ -13,7 +13,7 @@ rootCas
     ;
 
 var options = {
-    url: 'https://docs.genesys.com/Special:Repository/gqm81rn.html?id=72e19a39-80c3-4793-9e99-fd5dcf7716df',
+    url: 'https://docs.genesys.com/Special:Repository/lrm85dp.html?id=47dbf1f6-9262-4a09-b652-3b4323cdd387',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'

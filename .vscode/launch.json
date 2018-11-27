@@ -7,6 +7,18 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch test complinks",
+            "program": "${workspaceFolder}/tests/test_parser_componentlinks.js"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach by Process ID",
+            "processId": "${command:PickProcess}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch scrapper",
             "program": "${workspaceFolder}/tests/test_scrapper.js"
         },
