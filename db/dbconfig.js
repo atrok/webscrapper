@@ -5,80 +5,81 @@ var logger = require('../lib/logger');
 var dbconfig = {
     connection_string: {
         dbtype: "couchdb",
-        couchdb_host: '192.168.14.92',
+        couchdb_host: '192.168.14.91',
         couchdb_port: 5984,
         couchdb_username: 'admin',
         couchdb_pass: 'Genesys#1',
-        dbname: "genesys_releases_bk",
-        //dbname: "test",
-        _design: "_design",
-        views: {
-            links: {
-                design_doc_name: "scrapper_links",
-                designdocument: "_design/scrapper_links",
-                path: "scrapper_links/links",
-                name: "links",
-                func: {
-                    links: {
-                        map: function (doc) {
-                            if (doc.solution_name && doc.component && doc.family && doc["component-href"]) {
-                                emit([doc.solution_name, doc.component, doc.family, doc["component-href"]], 1);
-                            }
-                        },
-                        reduce: "_count"
-                    }
-                },
-                exists: false
+        dbname: "genesys_releases"
+    },
+    //dbname: "test",
+    _design: "_design",
+    views: {
+        links: {
+            design_doc_name: "scrapper_links",
+            designdocument: "_design/scrapper_links",
+            path: "scrapper_links/links",
+            name: "links",
+            func: {
+                links: {
+                    map: function (doc) {
+                        if (doc.solution_name && doc.component && doc.family && doc["component-href"]) {
+                            emit([doc.solution_name, doc.component, doc.family, doc["component-href"]], 1);
+                        }
+                    },
+                    reduce: "_count"
+                }
             },
-            releases: {
-                design_doc_name: "scrapper_releases",
-                designdocument: "_design/scrapper_releases",
-                path: "scrapper_releases/releases",
-                name: "releases",
-                func: {
-                    releases: {
-                        map: function (doc) {
-                            if (doc.solution_name && doc.component && doc.family && doc.release) {
-                                emit([doc.solution_name, doc.component, doc.family, doc.release], 1);
-                            }
-                        },
-                        reduce: "_count"
-                    }
-                },
-                exists: false,
-            }
+            exists: false
+        },
+        releases: {
+            design_doc_name: "scrapper_releases",
+            designdocument: "_design/scrapper_releases",
+            path: "scrapper_releases/releases",
+            name: "releases",
+            func: {
+                releases: {
+                    map: function (doc) {
+                        if (doc.solution_name && doc.component && doc.family && doc.release) {
+                            emit([doc.solution_name, doc.component, doc.family, doc.release], 1);
+                        }
+                    },
+                    reduce: "_count"
+                }
+            },
+            exists: false,
         }
     }
 }
 
 
-var query = couchdb_requests.query;
-query.params.dbname = dbconfig.connection_string.dbname;
 
 
-var createview = couchdb_requests.createView;
-createview.params.dbname = dbconfig.connection_string.dbname;
 
-var save = couchdb_requests.save;
-save.params.dbname = dbconfig.connection_string.dbname;
 
-var checkview = couchdb_requests.isviewexists;
-checkview.params.dbname = dbconfig.connection_string.dbname;
+
+
+
+
 
 var isViewExists = async function (viewname) {
     //dbconfig.connection_string.dbname;
+    var checkview = couchdb_requests.isviewexists;
+    checkview.params.dbname = dbconfig.connection_string.dbname;
     checkview.params.view = viewname;
+
     return execute(checkview);
 
 }
 var getlinks = async function () {
-    query.params.view = dbconfig.connection_string.views.links.path;
+    var query = couchdb_requests.query;
+    query.params.dbname = dbconfig.connection_string.dbname;
+    query.params.view = dbconfig.views.links.path;
     query.params.opts = { group: true, inclusive_end: true };
 
     try {
         logger.info("getlinks")
 
-        await checkView(dbconfig.connection_string.views.links);
+        await checkView(dbconfig.views.links);
 
         return await execute(query);
     } catch (exc) {
@@ -88,6 +89,8 @@ var getlinks = async function () {
 
 
 var checkView = async function (view) {
+    var createview = couchdb_requests.createView;
+    createview.params.dbname = dbconfig.connection_string.dbname;
 
     return new Promise(async (resolve, reject) => {
         //logger.debug("Checking ${view} exists");
@@ -101,7 +104,7 @@ var checkView = async function (view) {
                     createview.params.view = view.designdocument;
                     createview.params.func = view.func;
                     await execute(createview);
-                    
+
                 }
                 view.exists = true; // cache view existence to local variable
             }
@@ -117,9 +120,10 @@ var checkView = async function (view) {
 var findrelease = async function (args) {
     // get instance of couchdb
     try {
-        await checkView(dbconfig.connection_string.views.releases);
+        await checkView(dbconfig.views.releases);
 
         var query = couchdb_requests.query;
+        query.params.dbname = dbconfig.connection_string.dbname;
 
         if (!args) {
             throw new Error("Query options aren't provided")
@@ -152,7 +156,7 @@ var findrelease = async function (args) {
         var opts = { startkey: sk, endkey: ek, group: true, reduce: true, inclusive_end: true }
 
         query.params.opts = opts;
-        query.params.view = dbconfig.connection_string.views.releases.path;
+        query.params.view = dbconfig.views.releases.path;
 
         //logger.info("get releases" + options);
         var t = execute(query);
@@ -164,6 +168,8 @@ var findrelease = async function (args) {
 
 var savetodb = function (result) {
     try {
+        var save = couchdb_requests.save;
+        save.params.dbname = dbconfig.connection_string.dbname;
         save.params.result = result;
         return execute(save);
     } catch (exc) {
@@ -177,7 +183,7 @@ var savetodb = function (result) {
 var execute = function (params) {
     return new Promise(async (resolve, reject) => {
         try {
-            logger.debug("Sending to DB:"+JSON.stringify(params.request));
+            logger.debug("Sending to DB:" + JSON.stringify(params.request));
             var db = dbwrapper.getInstance(dbconfig.connection_string);
             var res = await db.handleRequest(params);
             resolve(res);
@@ -187,9 +193,25 @@ var execute = function (params) {
     })
 }
 
+var init = function (arg) {
+
+    dbconfig = Object.assign(dbconfig, arg);
+
+}
+
 module.exports = {
     getlinks,
     findrelease,
-    savetodb
-
+    savetodb,
+    init,
+    dbconfig: {
+        connection_string: {
+            dbtype: "couchdb",
+            couchdb_port: 5984,
+            couchdb_host: '',
+            couchdb_username: '',
+            couchdb_pass: '',
+            dbname: ""
+        }
+    }
 };

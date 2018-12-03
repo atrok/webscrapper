@@ -43,8 +43,8 @@ function serverCreate(options) {
             res.end();
         });
 
-        http.listen(3000, function () {
-            logger.info('listening on *:3000');
+        http.listen(3030, function () {
+            logger.info('Web Scrapper server is listening on *:3030');
         });
 
         io.on('connection', function (socket) {

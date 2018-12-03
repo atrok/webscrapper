@@ -13,17 +13,18 @@ rootCas
     ;
 
 var options = {
-    url: 'https://docs.genesys.com/Special:Repository/lrm85dp.html?id=47dbf1f6-9262-4a09-b652-3b4323cdd387',
+    url: 'https://docs.genesys.com/images/Repo/genadmin81rn.html',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'
     },
     search: {
-        solution_name: "eServices",
-        component: "Universal Contact Server",
+        solution_name: "Genesys Administrator",
+        component: "Genesys Administrator",
         family: "8.1",
         release: "",
-        "release-link-href": "https://docs.genesys.com/Special:Repository/gqm81rn.html?id=72e19a39-80c3-4793-9e99-fd5dcf7716df"
+        "component-href": "https://docs.genesys.com/images/Repo/genadmin81rn.html",
+        "release-link-href": ""
     }
 };
 

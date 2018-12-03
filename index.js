@@ -1,20 +1,19 @@
 var schedule = require('node-schedule');
-var logger = require('../lib/winstonlogger');
-
-var scrapper = require('../scrapper').scrapperCreate({
+var logger = require('./lib/winstonlogger');
+var scrapper = require('./scrapper').scrapperCreate({
   logger: logger,
   starturl: 'https://docs.genesys.com/Documentation/RN',
   connection_string: {
     dbtype: "couchdb",
-    couchdb_host: '192.168.14.92',
+    couchdb_host: '192.168.14.91',
     couchdb_port: 5984,
     couchdb_username: 'admin',
     couchdb_pass: 'Genesys#1',
-    dbname: "genesys_releases_bk"
+    dbname: "genesys_releases"
 }
 });
 
-var serverCreate = require('../server');
+var serverCreate = require('./server');
 
 
 var job = {
@@ -23,12 +22,7 @@ var job = {
   report: { invocations: 0 }
 }
 
-let startTime = new Date(Date.now() + 5000);
-let endTime = new Date(startTime.getTime() + 60000);
-var rule = new schedule.RecurrenceRule();
-rule.minute = 42;
-
-job.scheduledJob = schedule.scheduleJob({ start: startTime, end: endTime }, function () {
+job.scheduledJob = schedule.scheduleJob({ hour: 23, minute: 59 }, function () {
   logger.info('Scheduled job is starting');
   job.report.invocations++;
 

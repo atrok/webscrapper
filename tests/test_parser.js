@@ -3,7 +3,11 @@ var {requestHandler,parsers}=require('../lib/parse');
 var logger=require('../lib/logger');
 var rootCas = require('ssl-root-cas').create();
 var path = require('path');
-var { getlinks, findrelease,savetodb} = require('../db/dbconfig');
+var { getlinks, findrelease,savetodb,init} = require('../db/dbconfig');
+var testdbconfig=require('./dbsettings_for_tests');
+
+//init database with test settings
+init(testdbconfig);
 
 //var opts={ startkey: [args, ""], endkey: [args, {}], group: true, reduce: true, inclusive_end: true }
 
@@ -13,15 +17,15 @@ rootCas
     ;
 
 var options = {
-    url: 'https://docs.genesys.com/Documentation/RN/8.5.x/gax85rn/gax85rn',
+    url: 'https://docs.genesys.com/Documentation/ST/latest/RNs/LFMTClient',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'
     },
     search: {
-        solution_name: "Genesys Administrator Extension",
-        component: "Genesys Administrator Extension",
-        family: "9.0",
+        solution_name: "Genesys Care Tools",
+        component: "Log File Management Tool Client",
+        family: "8.5",
         release: "",
         "release-link-href": ""
     }

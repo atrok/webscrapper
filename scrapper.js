@@ -1,5 +1,5 @@
 var path = require('path');
-var { getlinks, findrelease, savetodb } = require('./db/dbconfig');
+var { init, getlinks, findrelease, savetodb } = require('./db/dbconfig');
 var { requestHandler, parsers } = require('./lib/parse');
 //var requester = require('./lib/parse');
 var rootCas = require('ssl-root-cas').create();
@@ -17,8 +17,8 @@ rootCas
 //caFile = path.resolve(__dirname, 'security/godaddy_g2.cer')
 
 
-var options = {
-    url: 'https://docs.genesys.com/Documentation/RN',
+var optionsProto = {
+    url: '',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'
@@ -31,19 +31,26 @@ var scrapperProto = {
     start: async function start() {
         var that = this;
 
-        var requester = requestHandler();
+        var requester = requestHandler({logger: that.logger});
+
+        //init db 
+        (that.connection_string)?init({connection_string: that.connection_string}):init();
 
         var report = {
             last_execution_time: new Date(),
-            errors: []
+            errors: [],
+            execution_report:[]
         };
+        
+
+        var t0 = performance.now();
+        var options=Object.assign({},optionsProto);
+        options.url=that.starturl;
 
         try {
             var components = await requester.run(options, parsers.componentlinks);
 
-            var execution_report = [];
 
-            var t0 = performance.now();
             for (var i = 0; i < components.length; i++) {
 
 
@@ -76,14 +83,14 @@ var scrapperProto = {
 
                             await savetodb(parsedrelease);
                             var repObj = opts;
-                            repObj.executiontime = performance.now() - t1;
-                            execution_report.push(repObj);
+                            repObj.executiontime = Math.floor((performance.now() - t1)) + ' ms';
+                            report.execution_report.push(repObj);
                         }
                     };
                 } catch (err) {
                     report.errors.push({ search: options.search, error: err.message });
                 }
-                report.report = execution_report;
+                //report.report = execution_report;
 
             }
         } catch (err) {
@@ -116,8 +123,8 @@ function scrapperCreate(options) {
     };
 
     obj.report = function report() {
-        console.log(JSON.stringify(rep));
-        return (rep) ? JSON.stringify(rep) : "Report is not populated yet."
+        console.log(JSON.stringify(rep,null,2));
+        return (rep) ? JSON.stringify(rep,null,2) : "Report is not populated yet."
     }
 
 
