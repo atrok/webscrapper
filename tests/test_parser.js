@@ -17,14 +17,14 @@ rootCas
     ;
 
 var options = {
-    url: 'https://docs.genesys.com/Documentation/ST/latest/RNs/LFMTClient',
+    url: 'https://docs.genesys.com/Documentation/RN/latest/mm-cht85rn/mm-cht85rn',
     ca: rootCas,
     agentOptions: {
         secureProtocol: 'TLSv1_2_method'
     },
     search: {
-        solution_name: "Genesys Care Tools",
-        component: "Log File Management Tool Client",
+        solution_name: "eServices",
+        component: "Chat Server",
         family: "8.5",
         release: "",
         "release-link-href": ""
@@ -46,7 +46,7 @@ var v = async (logger) => {
             var parsedrelease = await requester.run(options, parsers.page);
            logger.info(JSON.stringify(parsedrelease));
 
-           await savetodb(parsedrelease);
+          // await savetodb(parsedrelease);
         }
     };
 
