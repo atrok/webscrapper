@@ -8,6 +8,8 @@ var { performance } = require('perf_hooks');
 var utils = require('./lib/utils');
 var logger = require('./lib/winstonlogger');
 
+const EventEmitter = require('events');
+
 
 
 rootCas
@@ -31,6 +33,8 @@ var scrapperProto = {
     start: async function start() {
         var that = this;
 
+        that.emit('started');
+
         var requester = requestHandler({logger: that.logger});
 
         //init db 
@@ -52,6 +56,8 @@ var scrapperProto = {
 
 
             for (var i = 0; i < components.length; i++) {
+
+                that.emit('progress', i, components.length);
 
 
                 var value = components[i];
@@ -100,6 +106,8 @@ var scrapperProto = {
         report.execution_duration = Math.floor((performance.now() - t0) / 1000);
         that.store(report);
 
+        that.emit('done');
+
         logger.info(JSON.stringify(report, null, 2));
         logger.info("Execution time: " + report.execution_duration + 'sec')
 
@@ -115,7 +123,12 @@ function scrapperCreate(options) {
 
     var rep = { invocations: 0 };
 
-    var obj = Object.assign(Object.create(scrapperProto), options);
+    
+    var obj= Object.create(EventEmitter.prototype);
+    var scr=Object.create(scrapperProto);
+    obj = Object.assign(obj, scrapperProto, options);
+
+    
 
     obj.store = function store(r) {
         rep.invocations++;
@@ -128,6 +141,8 @@ function scrapperCreate(options) {
     }
 
 
+
+    console.log(obj);
 
     return obj;
 }
