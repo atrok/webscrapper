@@ -1,5 +1,5 @@
 
-var requester = require('../lib/parse').requester;
+var {requestHandler,parsers} = require('../lib/parse');
 var parser_85component_releaseslist = require('../lib/parse').parser_85component_releaseslist;
 var parser_85releasepage=require('../lib/parse').parser_85releasepage;
 var rootCas = require('ssl-root-cas').create();
@@ -28,9 +28,25 @@ var options = {
     }
 };
 
-var v = async () => {
+var options_ga = {
+    url: 'https://docs.genesys.com/images/Repo/genadmin81rn.html#8.1.311.03',
+    ca: rootCas,
+    agentOptions: {
+        secureProtocol: 'TLSv1_2_method'
+    },
+    search: {
+        solution_name: "Genesys Administrator",
+        component: "Genesys Administrator",
+        family: "8.1",
+        release: "8.1.311.03",
+        "component-href": "https://docs.genesys.com/images/Repo/genadmin81rn.html",
+        "release-link-href": ""
+    }
+};
 
-        var parsedrelease = await requester(options, parser_85releasepage);
+var v = async () => {
+    var requester = requestHandler({logger: logger});
+        var parsedrelease = await requester.run(options_ga, parsers.page);
            logger.info(JSON.stringify(parsedrelease));
 
 }
