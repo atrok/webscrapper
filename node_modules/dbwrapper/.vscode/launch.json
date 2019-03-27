@@ -7,6 +7,12 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch updated mcp",
+            "program": "${workspaceFolder}/updatefromview_mcp.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch deletebyid",
             "program": "${workspaceFolder}/deletebyid.js"
         },
