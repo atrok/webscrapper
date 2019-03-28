@@ -5,7 +5,7 @@ var logger = require('../lib/logger');
 var dbconfig = {
     connection_string: {
         dbtype: "couchdb",
-        couchdb_host: '192.168.14.91',
+        couchdb_host: '10.12.60.130',
         couchdb_port: 5984,
         couchdb_username: 'admin',
         couchdb_pass: 'Genesys#1',

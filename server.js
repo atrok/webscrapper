@@ -9,14 +9,7 @@ var { performance } = require('perf_hooks');
 var scrapperConfig = {
     logger: logger,
     starturl: 'https://docs.genesys.com/Documentation/RN',
-    connection_string: {
-        dbtype: "couchdb",
-        couchdb_host: '192.168.14.91',
-        couchdb_port: 5984,
-        couchdb_username: 'admin',
-        couchdb_pass: 'Genesys#1',
-        dbname: "genesys_releases"
-    }
+    connection_string: null
 };
 
 
@@ -32,6 +25,8 @@ function serverCreate(options) {
 
     var obj = Object.assign(Object.create(serverProto), options);
 
+    scrapperConfig.connection_string=obj.configuration.database;
+    
     obj.start = function () {
         that = this;
 
@@ -95,8 +90,9 @@ function serverCreate(options) {
             res.end();
         });
 
-        http.listen(3030, function () {
-            logger.info('Web Scrapper server is listening on *:3030');
+        //http.listen(3030, function () {
+        http.listen(obj.configuration.http_port, function () {
+            logger.info('Web Scrapper server is listening on *:'+obj.configuration.http_port);
         });
 
         io.on('connection', function (socket) {
