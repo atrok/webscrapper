@@ -4,7 +4,9 @@ var logger = require('./lib/winstonlogger');
 var io = require('socket.io')(http);
 var schedule = require('node-schedule');
 var scrapper = require('./scrapper');
+var x=require('./lib/json2html');
 var { performance } = require('perf_hooks');
+
 
 var scrapperConfig = {
     logger: logger,
@@ -80,7 +82,7 @@ function serverCreate(options) {
                 that.jobs.forEach(o => {
                     if(o.id==url.query.id){
                         res.write('<p>Job ' + o.id + ' is ' + o.status+'</p>');
-                        res.write('<p>'+o.scrapper.report()+'</p>');
+                        res.write('<p>'+x.toHtml(o.scrapper.report())+'</p>');
 
                     }
                 });

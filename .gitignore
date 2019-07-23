@@ -1,2 +1,7 @@
 configuration.js
 combined.log
+daemon/**
+daemon/genesys*.log
+tests/execution_report.txt
+daemon/genesyswebscrapper.err.log
+daemon/genesyswebscrapper.out.log
