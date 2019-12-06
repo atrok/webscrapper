@@ -5,7 +5,7 @@ var logger = require('../lib/logger');
 var dbconfig = {
     connection_string: {
         dbtype: "couchdb",
-        couchdb_host: '10.12.60.130',
+        couchdb_host: '192.168.14.91',
         couchdb_port: 5984,
         couchdb_username: 'admin',
         couchdb_pass: 'Genesys#1',
@@ -44,6 +44,20 @@ var dbconfig = {
                         }
                     },
                     reduce: "_count"
+                }
+            },
+            exists: false,
+        },
+        _all: { // 
+            design_doc_name: "general",
+            designdocument: "_design/general",
+            path: "general/all",
+            name: "all",
+            func: {
+                all: {
+                    map: function (doc) {
+                        emit(doc.id, doc);
+                    }
                 }
             },
             exists: false,
@@ -96,19 +110,21 @@ var checkView = async function (view) {
         //logger.debug("Checking ${view} exists");
 
         try {
+            var res={};
+
             if (!view.exists) { // check locally stored value to avoid hitting database on every query request 
 
-                var b = await isViewExists(view.name); // local value is false, go ahead checking in db
+                var b = await isViewExists(view.designdocument+"/"+view.name); // local value is false, go ahead checking in db
                 if (!b) {
 
                     createview.params.view = view.designdocument;
                     createview.params.func = view.func;
-                    await execute(createview);
+                    res=await execute(createview);
 
                 }
                 view.exists = true; // cache view existence to local variable
             }
-            resolve()
+            resolve(res)
         } catch (exc) {
             reject(exc);
         }
@@ -177,6 +193,77 @@ var savetodb = function (result) {
     }
 }
 
+var deletefromdb = async function (params) {
+    try {
+
+        // if there is no user defined view and conditions defining the scope of documents to be deleted 
+        // we assume the deletion of all user defined  documents is requested (except _design documents)
+        // to achieve that we need to create a view to pull all doc ids, and then go over these IDs and remove it one by one
+
+        var query = couchdb_requests.query;
+        query.params.view = params.view || dbconfig.views._all.path;
+
+        if (!params.view) {
+/*
+            var createview = couchdb_requests.createView;
+            createview.params.dbname = dbconfig.connection_string.dbname;
+            createview.params.view = "_design/delete";
+            createview.params.func = {
+                all: {
+                    map: function (doc) {
+                        emit(doc.id, doc);
+                    }
+                }
+            };
+*/
+
+            var createviewresult= await checkView(dbconfig.views._all);
+        }
+        
+        query.params.dbname = dbconfig.connection_string.dbname;
+        
+        query.params.opts = params.opts || { inclusive_end: true, reduce: false, include_docs: false }
+
+        var res = await execute(query);
+
+
+        // add reference on delete/all view if exists to delete it as well
+        if(createviewresult) res.push({id:createviewresult.id});
+
+        var remove = couchdb_requests.remove;
+        remove.params.dbname = dbconfig.connection_string.dbname;
+
+        var count = 0;
+
+        /*
+        res.forEach(async obj => {
+
+            remove.params.id = obj._id
+            if (!params.test) { // execute only if params.test==false
+                var r = await execute(remove);
+                console.log(r);
+            }
+            count++;
+
+        })
+        */
+
+        for (var i=0; i<res.length; i++){
+            remove.params.id = res[i].id
+            if (!params.test) { // execute only if params.test==false
+                var r = await execute(remove);
+                //console.log(r);
+            }
+            count++;
+        }
+
+        logger.info("Records deleted: " + count);
+
+    } catch (exc) {
+        throw exc
+    }
+}
+
 
 
 
@@ -204,6 +291,7 @@ module.exports = {
     findrelease,
     savetodb,
     init,
+    deletefromdb,
     dbconfig: {
         connection_string: {
             dbtype: "couchdb",

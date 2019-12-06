@@ -1,7 +1,7 @@
 var logger = require('../lib/winstonlogger');
 var scrapper = require('../scrapper').scrapperCreate({
     logger: logger, 
-    starturl: 'https://docs.genesys.com/Documentation/RN',
+    starturl: 'http://localhost:5000/RN/',
     connection_string: {
         dbtype: "couchdb",
         couchdb_host: '192.168.14.92',

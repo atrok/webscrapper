@@ -79,10 +79,10 @@ class CouchDB {
 
             var views = Object.getOwnPropertyNames(row.doc.views);
             logger.debug("Looking for: " + viewname);
-            if (views.find(x => x == viewname)) {
+            if (views.find(x => row.id+"/"+x == viewname)) {
               logger.debug("Match!");
               resolve(true);
-              return
+              //return
             }
 
 
@@ -233,7 +233,7 @@ class CouchDB {
           return;
         }
         //console.log("Created succesfully");
-        resolve("Created succesfully, id:" + res.id + ", rev: " + res.rev + ", view:" + view); // returning Promise after views are created;
+        resolve({id:res.id, rev: res.rev, view: view}); // returning Promise after views are created;
       });
 
     })

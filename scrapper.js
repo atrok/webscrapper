@@ -3,7 +3,7 @@ var { init, getlinks, findrelease, savetodb } = require('./db/dbconfig');
 var { requestHandler, parsers } = require('./lib/parse');
 //var requester = require('./lib/parse');
 var rootCas = require('ssl-root-cas').create();
-var logger = require('./lib/logger');
+//var logger = require('./lib/logger');
 var { performance } = require('perf_hooks');
 var utils = require('./lib/utils');
 var logger = require('./lib/winstonlogger');
@@ -33,6 +33,8 @@ var scrapperProto = {
     start: async function start() {
         var that = this;
 
+        var logger= that.logger;
+
         that.emit('started');
 
         var requester = requestHandler({logger: that.logger});
@@ -52,7 +54,12 @@ var scrapperProto = {
         options.url=that.starturl;
 
         try {
+
+            logger.info("Determining components ...");
             var components = await requester.run(options, parsers.componentlinks);
+
+            logger.info( "Components found: "+components.length)
+            logger.info(JSON.stringify(components,2));
 
 
             for (var i = 0; i < components.length; i++) {
@@ -68,7 +75,7 @@ var scrapperProto = {
                 //options.search['component-href'] = value[3];
                 options.search = value;
 
-
+                logger.debug(JSON.stringify(value));
 
                 options.url = value['component-href'];
 
@@ -85,7 +92,7 @@ var scrapperProto = {
                             options.url = opts["release-link-href"];
                             options.search = opts;
                             var parsedrelease = await requester.run(options, parsers.page);
-                            logger.debug(JSON.stringify(parsedrelease));
+                            logger.info(JSON.stringify(parsedrelease));
 
                             await savetodb(parsedrelease);
                             var repObj = opts;
@@ -108,8 +115,8 @@ var scrapperProto = {
 
         that.emit('done');
 
-        logger.info(JSON.stringify(report, null, 2));
-        logger.info("Execution time: " + report.execution_duration + 'sec')
+        logger.info(JSON.stringify(that.report(), null, 2));
+        logger.info("Execution time: " + report.execution_duration + ' sec')
 
 
     },
@@ -137,7 +144,7 @@ function scrapperCreate(options) {
 
     obj.report = function report() {
         console.log(JSON.stringify(rep,null,2));
-        return (rep) ? JSON.stringify(rep,null,2) : "Report is not populated yet."
+        return (rep) ? rep : "Report is not populated yet."
     }
 
 

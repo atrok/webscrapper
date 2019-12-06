@@ -1,19 +1,23 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var logger = require('./lib/winstonlogger');
+var createlogger = require('./lib/winstonlogger');
 var io = require('socket.io')(http);
 var schedule = require('node-schedule');
 var scrapper = require('./scrapper');
 var x=require('./lib/json2html');
 var { performance } = require('perf_hooks');
 
+//var logger=createlogger();
 
+/*
 var scrapperConfig = {
-    logger: logger,
+    logger: null,
     starturl: 'https://docs.genesys.com/Documentation/RN',
+    //starturl: 'http://localhost:5000/RN',
     connection_string: null
 };
 
+*/
 
 var serverProto = {
 
@@ -24,10 +28,11 @@ var serverProto = {
 
 function serverCreate(options) {
 
+    var logger=createlogger();
 
-    var obj = Object.assign(Object.create(serverProto), options);
+    var obj = Object.assign(Object.create(serverProto), options.server);
 
-    scrapperConfig.connection_string=obj.configuration.database;
+    options.scrapperConfig.connection_string=obj.database;
     
     obj.start = function () {
         that = this;
@@ -35,9 +40,9 @@ function serverCreate(options) {
         app.get('/', function (req, res) {
             res.writeHead(200, { "Content-Type": "text/html" });
 
-            res.write('<h1>Genesys Release notes webscrapper service</h1>');
+            res.write('<h1>'+options.server.title+'</h1>');
 
-            res.write('<table><tr><th>JOB ID</th><th>Next Run</th><th>Invocations</th><th>Start url</th><th>Status</th><th>Progress</th></tr>')
+            res.write('<table id="jobs"><tr><th>JOB ID</th><th>Next Run</th><th>Invocations</th><th>Start url</th><th>Status</th><th>Progress</th></tr>')
 
             that.jobs.forEach(o=>{
                 let report=o.scrapper.report();
@@ -45,7 +50,9 @@ function serverCreate(options) {
 
                 let progress=o.progress.current+" out of "+o.progress.total+", Finishes in: "+Math.floor(o.progress.eta()/1000)+' sec';
 
-                res.write('<tr><td><a href="/report?id='+o.id+'">'+o.id+'</a></td><td>'+nextinvocation+'</td><td>'+report["invocations"] +'</td><td>'+o.scrapper.starturl+'</td><td>'+o.status+'</td><td>'+progress+'</td></tr>' );
+                let invocations=report["invocations"];
+
+                res.write('<tr><td><a href="/report?id='+o.id+'">'+o.id+'</a></td><td>'+nextinvocation+'</td><td>'+invocations +'</td><td>'+o.scrapper.starturl+'</td><td>'+o.status+'</td><td>'+progress+'</td></tr>' );
                 //res.write('<tr><td><a href="/report?id='+o.id+'">'+o.id+'</a></td><td></td><td>'+report.invocations +'</td><td>'+o.scrapper.starturl+'</td><td>'+o.status+'</td></tr>' );
             })
             res.write('</table>')
@@ -64,7 +71,7 @@ function serverCreate(options) {
 
             var immediatejob=createScrapperJob(startTime);
 
-            res.write('<h1>Genesys Release notes webscrapper service</h1>');
+            res.write('<h1>'+options.server.title+'</h1>');
             res.write('<p>Job is created: <a href="/report?id='+immediatejob.id+'">'+immediatejob.id+'</a></p>');
 
             res.end();
@@ -76,7 +83,7 @@ function serverCreate(options) {
             var url=require('url').parse(req.url, true);
 
             res.writeHead(200, { "Content-Type": "text/html" });
-            res.write('<h1>Genesys Release notes webscrapper service</h1>');
+            res.write('<h1>'+options.server.title+'</h1>');
 
             if(url.query.id){
                 that.jobs.forEach(o => {
@@ -93,13 +100,18 @@ function serverCreate(options) {
         });
 
         //http.listen(3030, function () {
-        http.listen(obj.configuration.http_port, function () {
-            logger.info('Web Scrapper server is listening on *:'+obj.configuration.http_port);
+        http.listen(obj.http_port, function () {
+            logger.info(obj.title+" is listening on *:"+obj.http_port);
         });
 
         io.on('connection', function (socket) {
+
+
+            io.emit('client data', getJobStatus());
+
             socket.on('chat message', function (msg) {
-                io.emit('chat message', msg);
+
+                io.emit('client data', msg);
             });
 
             socket.on('start job', function (msg) {
@@ -115,11 +127,48 @@ function serverCreate(options) {
             });
         });
 
+        // prepare the list of jobs statuses
+
+        function getJobStatus(id){var msgdata=[];
+            
+            var j=that.jobs.filter(o=>{
+
+               if (!id) return true;// in case no id provided then return all array elements
+
+              return  (o.id==id) ? true : false; // otherwise return just updated element;
+
+            })
+
+            j.forEach(o=>{
+                let report=o.scrapper.report();
+                let nextinvocation=(o.scheduledJob.nextInvocation())?o.scheduledJob.nextInvocation().toString():"no";
+
+                let progress=o.progress.current+" out of "+o.progress.total+", Finishes in: "+Math.floor(o.progress.eta()/1000)+' sec';
+
+                msgdata.push(
+                    {
+                        jobid: o.id,
+                        'next-run': nextinvocation,
+                        invocations: report["invocations"],
+                        url: o.scrapper.starturl,
+                        status: o.status,
+                        'progress': progress
+                    }
+                );
+                //res.write('<tr><td><a href="/report?id='+o.id+'">'+o.id+'</a></td><td>'+nextinvocation+'</td><td>'+report["invocations"] +'</td><td>'+o.scrapper.starturl+'</td><td>'+o.status+'</td><td>'+progress+'</td></tr>' );
+                //res.write('<tr><td><a href="/report?id='+o.id+'">'+o.id+'</a></td><td></td><td>'+report.invocations +'</td><td>'+o.scrapper.starturl+'</td><td>'+o.status+'</td></tr>' );
+            })
+
+            return msgdata;
+        }
+        
         // create scheduled scrapper job
 
-        function createScrapperJob(when){
-            var scr = scrapper.scrapperCreate(scrapperConfig);
+        function createScrapperJob(when, scrapperConfig){
 
+            var scr = scrapper.scrapperCreate((scrapperConfig)?scrapperConfig:options.scrapperConfig);
+
+            
             var job = {
                 id: Date.now(),
                 scheduledJob: null,
@@ -139,6 +188,8 @@ function serverCreate(options) {
                 scrapper: scr,
             }
 
+            scr.logger=createlogger({jobid:job.id});
+            
             job.scheduledJob = schedule.scheduleJob(when, function () {
                 logger.info('Scheduled job is starting: '+job.id);
                     
@@ -146,6 +197,7 @@ function serverCreate(options) {
                     job.status='Running';
                     job.progress.starttime=performance.now();
                     job.progress.stagetime=performance.now();
+                    io.emit('client data', getJobStatus(job.id));
                 })
 
                 job.scrapper.on('done',()=>{
@@ -153,6 +205,7 @@ function serverCreate(options) {
                     job.progress.current=0;
                     job.progress.total=0;
                     job.progress.endtime=performance.now();
+                    io.emit('client data', getJobStatus());
                 })
 
                 job.scrapper.on('progress',(current, total)=>{
@@ -163,8 +216,15 @@ function serverCreate(options) {
                     
                     //job.progress.eta=(total-current)*job.progress.stagetime; 
 
+                    io.emit('client data', getJobStatus());
 
                     
+                })
+
+                job.scrapper.on('log',(msg)=>{
+                    
+                    logger.info("Job: "+job.id+", "+msg);
+
                 })
 
                 job.scrapper.start();

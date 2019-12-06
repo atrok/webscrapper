@@ -11,6 +11,6 @@
   "dependencies": {
     "cradle": "^0.7.1",
     "mssql": "^4.2.2",
-    "oracledb": "^3.0.0"
+    "oracledb": "^4.1.0"
   }
 }
