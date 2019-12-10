@@ -33,33 +33,33 @@ var scrapperProto = {
     start: async function start() {
         var that = this;
 
-        var logger= that.logger;
+        var logger = that.logger;
 
         that.emit('started');
 
-        var requester = requestHandler({logger: that.logger});
+        var requester = requestHandler({ logger: that.logger });
 
         //init db 
-        (that.connection_string)?init({connection_string: that.connection_string}):init();
+        (that.connection_string) ? init({ connection_string: that.connection_string }) : init();
 
         var report = {
             last_execution_time: new Date(),
             errors: [],
-            execution_report:[]
+            execution_report: []
         };
-        
+
 
         var t0 = performance.now();
-        var options=Object.assign({},optionsProto);
-        options.url=that.starturl;
+        var options = Object.assign({}, optionsProto);
+        options.url = that.starturl;
 
         try {
 
             logger.info("Determining components ...");
             var components = await requester.run(options, parsers.componentlinks);
 
-            logger.info( "Components found: "+components.length)
-            logger.info(JSON.stringify(components,2));
+            logger.info("Components found: " + components.length)
+            logger.info(JSON.stringify(components, 2));
 
 
             for (var i = 0; i < components.length; i++) {
@@ -128,14 +128,20 @@ var scrapperProto = {
 
 function scrapperCreate(options) {
 
-    var rep = { invocations: 0 };
+    var rep = {
+        invocations: 0,
+        execution_duration: 0,
+        errors: [],
+        execution_report: [],
+        msg: null
+    };
 
-    
-    var obj= Object.create(EventEmitter.prototype);
-    var scr=Object.create(scrapperProto);
+
+    var obj = Object.create(EventEmitter.prototype);
+    var scr = Object.create(scrapperProto);
     obj = Object.assign(obj, scrapperProto, options);
 
-    
+
 
     obj.store = function store(r) {
         rep.invocations++;
@@ -143,8 +149,9 @@ function scrapperCreate(options) {
     };
 
     obj.report = function report() {
-        console.log(JSON.stringify(rep,null,2));
-        return (rep) ? rep : "Report is not populated yet."
+        (rep.invocations > 0) ? rep.msg = "" : rep.msg = "Report is empty.";
+        console.log("Scapper.report() ", JSON.stringify(rep, null, 2));
+        return rep;
     }
 
 

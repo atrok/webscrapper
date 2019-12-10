@@ -8,7 +8,7 @@ configuration = {
             couchdb_pass: 'Genesys#1',
             dbname: "genesys_releases_bk"
         },
-        http_port: 13030,
+        http_port: 3030,
         title: "Test Web Scrapper Service "
     },
 scrapperConfig: {
